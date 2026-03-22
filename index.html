@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Steward Vector — Cybersecurity & Software Development</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #0e4d3a;
+      --green-light: #1a6b50;
+      --green-faint: rgba(14,77,58,0.08);
+      --off-white: #f8f5f0;
+      --off-white-2: #f0ece5;
+      --black: #0d0d0d;
+      --grey: #6b6b6b;
+      --grey-light: #c8c4be;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--off-white);
+      color: var(--black);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE TEXTURE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(248,245,240,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(14,77,58,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 36px;
+      height: 36px;
+    }
+
+    .nav-logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: 0.04em;
+    }
+
+    .nav-logo-text span {
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--grey);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--green); }
+
+    .nav-cta {
+      background: var(--green) !important;
+      color: var(--off-white) !important;
+      padding: 10px 22px;
+      border-radius: 4px;
+      font-size: 13px !important;
+    }
+
+    .nav-cta:hover { background: var(--green-light) !important; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 140px 24px 80px;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(14,77,58,0.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--green);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      background: rgba(14,77,58,0.05);
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      max-width: 900px;
+      color: var(--black);
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--green);
+    }
+
+    .hero-sub {
+      margin-top: 28px;
+      font-size: 17px;
+      color: var(--grey);
+      max-width: 520px;
+      line-height: 1.65;
+      font-weight: 300;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .hero-ctas {
+      margin-top: 44px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: var(--off-white);
+      border: none;
+      padding: 16px 36px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--green-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(14,77,58,0.25);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--black);
+      border: 1.5px solid rgba(0,0,0,0.2);
+      padding: 16px 36px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    /* Hero visual */
+    .hero-visual {
+      margin-top: 72px;
+      width: 100%;
+      max-width: 760px;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+
+    .hero-card {
+      background: var(--green);
+      border-radius: 16px;
+      padding: 48px;
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .hero-stat {
+      text-align: center;
+      color: var(--off-white);
+    }
+
+    .hero-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .hero-stat-label {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.65;
+      margin-top: 6px;
+    }
+
+    .hero-stat-divider {
+      width: 1px;
+      height: 60px;
+      background: rgba(255,255,255,0.15);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── SECTION BASE ─── */
+    section {
+      padding: 100px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 5vw, 54px);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--black);
+    }
+
+    .section-title em { font-style: italic; color: var(--green); }
+
+    .section-sub {
+      margin-top: 16px;
+      font-size: 16px;
+      color: var(--grey);
+      max-width: 500px;
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(14,77,58,0.2), transparent);
+      margin: 0 auto;
+    }
+
+    /* ─── SERVICES ─── */
+    #services { padding-top: 80px; }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2px;
+      margin-top: 60px;
+      background: rgba(14,77,58,0.1);
+      border: 1px solid rgba(14,77,58,0.1);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .service-card {
+      background: var(--off-white);
+      padding: 40px 36px;
+      transition: background 0.3s ease;
+      position: relative;
+    }
+
+    .service-card:hover { background: var(--off-white-2); }
+
+    .service-icon {
+      width: 44px; height: 44px;
+      background: var(--green-faint);
+      border: 1px solid rgba(14,77,58,0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .service-icon svg { width: 22px; height: 22px; stroke: var(--green); fill: none; stroke-width: 1.5; }
+
+    .service-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .service-desc {
+      font-size: 14px;
+      color: var(--grey);
+      line-height: 1.7;
+    }
+
+    .service-tag {
+      display: inline-block;
+      margin-top: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+      border: 1px solid rgba(14,77,58,0.3);
+      padding: 4px 10px;
+      border-radius: 3px;
+    }
+
+    /* ─── APPROACH ─── */
+    #approach {
+      background: var(--green);
+      max-width: 100%;
+      padding: 100px 24px;
+    }
+
+    #approach .inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    #approach .section-label { color: rgba(248,245,240,0.5); }
+    #approach .section-title { color: var(--off-white); }
+    #approach .section-title em { color: rgba(248,245,240,0.5); font-style: italic; }
+    #approach .section-sub { color: rgba(248,245,240,0.65); }
+
+    .approach-grid {
+      margin-top: 60px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+    }
+
+    .approach-item {}
+
+    .approach-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 56px;
+      font-weight: 900;
+      color: rgba(248,245,240,0.12);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .approach-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--off-white);
+      margin-bottom: 10px;
+    }
+
+    .approach-desc {
+      font-size: 14px;
+      color: rgba(248,245,240,0.55);
+      line-height: 1.7;
+    }
+
+    /* ─── ABOUT / WHY ─── */
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      margin-top: 0;
+    }
+
+    @media (max-width: 768px) {
+      .about-layout { grid-template-columns: 1fr; gap: 40px; }
+    }
+
+    .about-visual {
+      background: var(--off-white-2);
+      border: 1px solid rgba(14,77,58,0.12);
+      border-radius: 16px;
+      padding: 48px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-visual::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; right: -40px;
+      width: 180px; height: 180px;
+      background: var(--green-faint);
+      border-radius: 50%;
+    }
+
+    .about-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--black);
+      margin-bottom: 24px;
+    }
+
+    .about-attr {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+
+    .about-points {
+      list-style: none;
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .about-point {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .about-point-icon {
+      width: 28px; height: 28px;
+      flex-shrink: 0;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .about-point-icon svg { width: 12px; height: 12px; stroke: white; fill: none; stroke-width: 2.5; }
+
+    .about-point-text { font-size: 15px; color: var(--grey); line-height: 1.6; }
+    .about-point-text strong { color: var(--black); font-weight: 600; }
+
+    /* ─── TESTIMONIALS ─── */
+    #testimonials {}
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 56px;
+    }
+
+    .testi-card {
+      border: 1px solid rgba(14,77,58,0.12);
+      border-radius: 12px;
+      padding: 32px;
+      background: white;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .testi-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(14,77,58,0.1);
+    }
+
+    .testi-stars {
+      display: flex; gap: 4px; margin-bottom: 20px;
+    }
+
+    .star { color: var(--green); font-size: 14px; }
+
+    .testi-text {
+      font-size: 15px;
+      color: var(--black);
+      line-height: 1.7;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testi-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: white;
+      font-size: 16px;
+    }
+
+    .testi-name { font-weight: 600; font-size: 14px; }
+    .testi-role { font-size: 12px; color: var(--grey); }
+
+    /* ─── FAQ ─── */
+    #faq {}
+
+    .faq-layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 80px;
+      margin-top: 0;
+    }
+
+    @media (max-width: 768px) {
+      .faq-layout { grid-template-columns: 1fr; }
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .faq-item {
+      border: 1px solid rgba(14,77,58,0.12);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .faq-q {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 20px 24px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--black);
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      transition: background 0.2s;
+    }
+
+    .faq-q:hover { background: var(--green-faint); }
+
+    .faq-q.open { background: var(--green-faint); color: var(--green); }
+
+    .faq-chevron {
+      width: 18px; height: 18px;
+      flex-shrink: 0;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      transition: transform 0.3s ease;
+    }
+
+    .faq-q.open .faq-chevron { transform: rotate(180deg); }
+
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+
+    .faq-a.open { max-height: 300px; }
+
+    .faq-a-inner {
+      padding: 0 24px 20px;
+      font-size: 14px;
+      color: var(--grey);
+      line-height: 1.75;
+    }
+
+    /* ─── CTA BANNER ─── */
+    #cta-banner {
+      background: var(--off-white-2);
+      max-width: 100%;
+      padding: 100px 24px;
+      border-top: 1px solid rgba(14,77,58,0.1);
+      border-bottom: 1px solid rgba(14,77,58,0.1);
+    }
+
+    #cta-banner .inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 60px;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      #cta-banner .inner { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--off-white);
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 24px 40px;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 40px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(14,77,58,0.1);
+    }
+
+    .footer-brand-desc {
+      max-width: 280px;
+      font-size: 14px;
+      color: var(--grey);
+      line-height: 1.7;
+      margin-top: 16px;
+    }
+
+    .footer-links-group h4 {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--black);
+      margin-bottom: 16px;
+    }
+
+    .footer-links-group ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+    .footer-links-group a {
+      font-size: 14px;
+      color: var(--grey);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links-group a:hover { color: var(--green); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 28px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-bottom p { font-size: 13px; color: var(--grey-light); }
+
+    .footer-bottom a { color: var(--grey-light); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--green); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--black);
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 18px 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero h1 { font-size: 44px; }
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Logo SVG inline */
+    .logo-svg path { fill: var(--green); }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <svg class="nav-logo-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="20" width="42" height="42" rx="2" transform="rotate(45 50 30)" fill="none" stroke="#0e4d3a" stroke-width="9"/>
+        <polyline points="18,54 50,86 82,54" fill="none" stroke="#0e4d3a" stroke-width="9" stroke-linejoin="round"/>
+      </svg>
+      <div class="nav-logo-text">STEWARD <span>Vector</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#approach">Our Approach</a></li>
+      <li><a href="#about">Why Us</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
+    </ul>
+    <button class="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">Cybersecurity &amp; Software Development</div>
+    <h1>Your digital fortress,<br><em>engineered</em> from scratch.</h1>
+    <p class="hero-sub">We test how real threats attack your systems — then build software that withstands them. Security through skill, not just certificates.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">Work With Us</a>
+      <a href="#services" class="btn-outline">Our Services</a>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="hero-stat">
+          <div class="hero-stat-num">100+</div>
+          <div class="hero-stat-label">Vulnerabilities Found</div>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">0</div>
+          <div class="hero-stat-label">Breaches Post-Audit</div>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">40+</div>
+          <div class="hero-stat-label">Organizations Secured</div>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">Skill</div>
+          <div class="hero-stat-label">Over Certificates</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="section-label reveal">What We Do</div>
+    <h2 class="section-title reveal">Two disciplines.<br><em>One mission.</em></h2>
+    <p class="section-sub reveal">We combine offensive security expertise with battle-tested software engineering to protect and empower your organization.</p>
+
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="service-title">Penetration Testing</div>
+        <p class="service-desc">We simulate real-world attacks on your networks, systems, and applications — probing every angle a true threat actor would exploit. No automated scanners. Real hands-on hacking.</p>
+        <span class="service-tag">Offensive Security</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 1.2-.504 2.294-1.31 3.086l-6.4 6.4a1.5 1.5 0 01-2.121 0l-6.4-6.4A4.5 4.5 0 013 12V6a3 3 0 013-3h12a3 3 0 013 3v6z"/></svg>
+        </div>
+        <div class="service-title">Vulnerability Assessment</div>
+        <p class="service-desc">Comprehensive analysis of your security posture. We identify, classify, and prioritize weaknesses before they become headlines — then show you exactly how to fix them.</p>
+        <span class="service-tag">Risk Reduction</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div class="service-title">Secure Software Development</div>
+        <p class="service-desc">We build software with security baked in from line one. Our developers are hackers first — they know exactly which code patterns attackers exploit, and they don't write them.</p>
+        <span class="service-tag">Development</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+        </div>
+        <div class="service-title">Network Security Hardening</div>
+        <p class="service-desc">From firewall configuration to zero-trust architecture — we design and implement network defenses that hold against modern attack vectors, not just textbook threats.</p>
+        <span class="service-tag">Infrastructure</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- APPROACH -->
+  <div id="approach">
+    <div class="inner">
+      <div class="section-label reveal">How We Work</div>
+      <h2 class="section-title reveal">Methodology that<br><em>doesn't cut corners.</em></h2>
+      <p class="section-sub reveal">Every engagement follows a rigorous process designed to leave nothing unexplored and nothing unfixed.</p>
+
+      <div class="approach-grid">
+        <div class="approach-item reveal">
+          <div class="approach-num">01</div>
+          <div class="approach-title">Reconnaissance</div>
+          <p class="approach-desc">We map your entire attack surface — publicly exposed assets, internal architecture, third-party integrations — before touching anything.</p>
+        </div>
+        <div class="approach-item reveal">
+          <div class="approach-num">02</div>
+          <div class="approach-title">Active Exploitation</div>
+          <p class="approach-desc">Our team attempts to breach your defenses the same way a real attacker would. No theoretical vulnerabilities — actual proof-of-concept exploits.</p>
+        </div>
+        <div class="approach-item reveal">
+          <div class="approach-num">03</div>
+          <div class="approach-title">Detailed Reporting</div>
+          <p class="approach-desc">You get a clear report: what we found, how critical it is, what we did with it, and exact remediation steps prioritized by risk.</p>
+        </div>
+        <div class="approach-item reveal">
+          <div class="approach-num">04</div>
+          <div class="approach-title">Remediation Support</div>
+          <p class="approach-desc">We don't disappear after delivery. We work alongside your team to fix findings and verify the fixes actually hold under re-testing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT / WHY US -->
+  <section id="about">
+    <div class="about-layout">
+      <div>
+        <div class="section-label reveal">Why Steward Vector</div>
+        <h2 class="section-title reveal">Skill over<br><em>paperwork.</em></h2>
+        <p class="section-sub reveal">We built Steward Vector on a contrarian belief: the best security team is one that actually knows how to hack — not one with the most certificates on the wall.</p>
+
+        <ul class="about-points">
+          <li class="about-point reveal">
+            <div class="about-point-icon">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <p class="about-point-text"><strong>Hackers first, consultants second.</strong> Every security team member is chosen for hands-on exploitation skill.</p>
+          </li>
+          <li class="about-point reveal">
+            <div class="about-point-icon">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <p class="about-point-text"><strong>Developers who think like attackers.</strong> Our engineers build software knowing exactly what bad actors look for.</p>
+          </li>
+          <li class="about-point reveal">
+            <div class="about-point-icon">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <p class="about-point-text"><strong>No bloat, no bureaucracy.</strong> We're a focused agency — every hour you pay for is an expert working your problem.</p>
+          </li>
+          <li class="about-point reveal">
+            <div class="about-point-icon">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <p class="about-point-text"><strong>Accountability.</strong> If we secure your software and it gets breached, we want to know about it. That's how we stay sharp.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="about-visual reveal">
+        <p class="about-quote">"We choose our security team on their skill in hacking into software and networks rather than their certificates."</p>
+        <div class="about-attr">— Steward Vector Philosophy</div>
+
+        <div style="margin-top:40px; padding-top:32px; border-top:1px solid rgba(14,77,58,0.12);">
+          <p style="font-size:14px;color:var(--grey);line-height:1.7;">Our development team consists of individuals who choose money over ambition — they're not trying to build the next startup, they're trying to write <em>excellent</em>, secure code for your business, full stop.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div style="text-align:center; max-width:600px; margin:0 auto 56px;">
+      <div class="section-label reveal">Client Results</div>
+      <h2 class="section-title reveal">What organizations<br><em>say about us.</em></h2>
+    </div>
+
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testi-text">"Steward Vector found 14 critical vulnerabilities in our system that two previous firms had completely missed. Their team doesn't just scan — they actually hack."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">A</div>
+          <div>
+            <div class="testi-name">Arjun Mehta</div>
+            <div class="testi-role">CTO, FinPulse Technologies</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testi-text">"The software they delivered has been running in production for 18 months. Zero incidents. Their developers clearly think about security at every layer."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">S</div>
+          <div>
+            <div class="testi-name">Sarah Kowalski</div>
+            <div class="testi-role">VP Engineering, NovaSystems</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testi-text">"We passed our compliance audit on the first attempt after Steward Vector hardened our network. Worth every rupee — a partner, not a vendor."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">R</div>
+          <div>
+            <div class="testi-name">Ravi Shankar</div>
+            <div class="testi-role">Director, DataVault Corp</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="faq-layout">
+      <div>
+        <div class="section-label reveal">Got Questions?</div>
+        <h2 class="section-title reveal">Frequently<br><em>Asked.</em></h2>
+        <p class="section-sub reveal" style="margin-top:20px;">Everything you need to know before engaging with us.</p>
+      </div>
+
+      <div class="faq-list reveal">
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            What types of organizations do you work with?
+            <svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a">
+            <div class="faq-a-inner">We work with organizations of all sizes — from startups shipping their first product to enterprises with complex multi-cloud infrastructure. If you store sensitive data or run critical systems, we can help protect them.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            How is a penetration test different from a vulnerability scan?
+            <svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a">
+            <div class="faq-a-inner">Vulnerability scanners are automated tools that flag known issues. A penetration test is a human-led, manual exercise where our experts actually attempt to exploit those issues — chaining vulnerabilities together just like a real attacker would. The difference between knowing a door is unlocked and actually walking through it.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Will testing disrupt our live systems?
+            <svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a">
+            <div class="faq-a-inner">We coordinate all testing windows with your team and operate with a defined scope of engagement. We never touch systems outside the agreed scope and schedule intensive tests during off-peak hours unless you prefer otherwise.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            How long does a typical engagement take?
+            <svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a">
+            <div class="faq-a-inner">A focused web application penetration test typically takes 1–2 weeks. A full network security assessment or software development project timeline is scoped based on your specific environment. We'll give you a clear estimate after an initial discovery call.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Do you provide proof-of-concept exploits in the report?
+            <svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a">
+            <div class="faq-a-inner">Yes. Where appropriate and agreed upon, we include proof-of-concept code or walkthroughs demonstrating the impact of each finding. This helps your engineering team understand exactly what needs fixing and why it matters.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <div id="cta-banner">
+    <div class="inner">
+      <div>
+        <div class="section-label reveal">Ready to Start?</div>
+        <h2 class="section-title reveal">Your systems are<br><em>only as strong</em><br>as your weakest line.</h2>
+        <p class="section-sub reveal" style="margin-top:16px;">Let's find it before someone else does. Reach out for a free initial scoping call — no obligation, no sales pitch.</p>
+      </div>
+      <div class="reveal">
+        <a href="mailto:contact@stewardvector.com" class="btn-primary" style="display:inline-block;white-space:nowrap;">Contact Us</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer id="contact">
+    <div class="footer-top">
+      <div>
+        <a href="#" class="nav-logo" style="margin-bottom:4px;">
+          <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+            <rect x="20" y="20" width="42" height="42" rx="2" transform="rotate(45 50 30)" fill="none" stroke="#0e4d3a" stroke-width="9"/>
+            <polyline points="18,54 50,86 82,54" fill="none" stroke="#0e4d3a" stroke-width="9" stroke-linejoin="round"/>
+          </svg>
+          <div class="nav-logo-text">STEWARD <span>Vector</span></div>
+        </a>
+        <p class="footer-brand-desc">Cybersecurity and software development services. We protect organizations by thinking like the attackers they face.</p>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Penetration Testing</a></li>
+          <li><a href="#services">Vulnerability Assessment</a></li>
+          <li><a href="#services">Secure Development</a></li>
+          <li><a href="#services">Network Hardening</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#approach">Our Approach</a></li>
+          <li><a href="#testimonials">Case Studies</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:contact@stewardvector.com">contact@stewardvector.com</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Twitter / X</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Steward Vector. All Rights Reserved.</p>
+      <div style="display:flex;gap:24px;">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // FAQ toggle
+    function toggleFaq(btn) {
+      const answer = btn.nextElementSibling;
+      const isOpen = btn.classList.contains('open');
+      // close all
+      document.querySelectorAll('.faq-q').forEach(b => {
+        b.classList.remove('open');
+        b.nextElementSibling.classList.remove('open');
+      });
+      if (!isOpen) {
+        btn.classList.add('open');
+        answer.classList.add('open');
+      }
+    }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
